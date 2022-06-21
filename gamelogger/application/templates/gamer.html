@@ -1,0 +1,21 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div>
+    {% for gamer in gamers %}
+    <p style='margin:0 0 0 2%'>
+        <a href="gamers/{{gamer.id}}"> {{ gamer.name }} See my games </a>
+        <p style='margin:0 0 0 2%'>
+            <a href="gamers/update/{{gamer.id}}" class="btn btn-primary" role="button">Update gamer</a>
+         </p>
+        <form style='margin:0 0 0 2%' method="POST" action="gamers/delete/{{gamer.id}}">
+            <button type="submit" value="Submit" class="btn btn-danger">Delete gamer!</button>
+        </form>
+    </p>
+    {% endfor %}
+    <br>
+    <p style="margin:0 0 0 2%">
+        <a href="gamers/add" class="btn btn-primary" role="button">Add a gamer</a> 
+    </p>
+</div>
+{% endblock %}

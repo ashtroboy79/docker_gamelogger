@@ -1,0 +1,7 @@
+envfile
+
+*.sh 
+*.md 
+application/tests/
+create.py
+create2.py

@@ -1,0 +1,32 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div>
+    <p style='margin:0 0 0 2%'>
+        {% if gamer %}
+            {{gamer.name}}'s Games
+        {% elif designer %}
+            Games designed by {{designer}} 
+        {% elif genre %}
+            All {{genre}} Games
+        {% else %}
+            All Games
+        {% endif %}
+        <br>
+    </p>
+    
+    {% for game in games %}
+    <p style="margin:0 0 0 2%">
+          Game: {{ game.name }}, {% if not gamer %} Owner: {{ game.gamerbr.name }},{% endif %} Rating: {{game.rating}}, {% if not designer  %} Designer: <a href="/games/designer/{{game.designer}}" >{{game.designer}}</a>, {% endif %} {% if not genre %} Genre: <a href="/games/genre/{{game.genre}}">{{game.genre}} {% endif %}</a>
+        <a href="/games/update/{{game.id}}" class="btn btn-primary" role="button">Update game</a> 
+            <form style="margin:0 0 0 2%" method="POST" action="/games/delete/{{game.id}}">
+                <button type="submit" value="Submit" class="btn btn-danger">Delete Game!! </button>
+            </form>
+    </p>
+    {% endfor %}
+    <br>
+    <p style="margin:0 0 0 2%">
+        <a href="/games/add" class="btn btn-primary" role="button">Add a game</a> 
+    </p>
+</div>
+{% endblock %}
