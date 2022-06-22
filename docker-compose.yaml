@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  mysql:
+    container_name: mysql
+    image: gamelogger_db
+    build: ./db
+    networks:
+      - gamelogger-network
+    environment:
+      DATABASE_URI: ${DATABASE_URI}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+    - type: volume
+      source: gamelogger-vol
+      target: /var/lib/mysql
+  flask-app:
+    # container_name: flask-app
+    image: gamelogger:v1
+    build: ./gamelogger
+    networks:
+      - gamelogger-network
+    environment:
+      DATABASE_URI: ${DATABASE_URI}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+    deploy: 
+      replicas: 3
+    depends_on: 
+      - "mysql"
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    networks:
+      - gamelogger-network
+    volumes:
+      - type: bind
+        source: nginx.conf
+        target: /etc/nginx/nginx.conf
+    ports:
+      - published: 80
+        target: 80
+        protocol: tcp
+    depends_on:
+      - "flask-app"
+networks:
+  gamelogger-network:
+volumes:
+  gamelogger-vol:
